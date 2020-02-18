@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Admin", "Blog.Admin\Bl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Api", "Blog.Api\Blog.Api.csproj", "{2D4568F7-5067-4C1C-A744-D30558C64EDD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Model", "Blog.Model\Blog.Model.csproj", "{77AAECE4-F597-4D5A-998C-399C5044BDA6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Common", "Blog.Model\Blog.Common.csproj", "{77AAECE4-F597-4D5A-998C-399C5044BDA6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{61A434AB-6BF1-4223-BA46-A6F364FA1843}"
 	ProjectSection(SolutionItems) = preProject

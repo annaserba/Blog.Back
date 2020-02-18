@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Blog.Api.Data;
+using Blog.Data;
 using Blog.Models;
 
 namespace Blog.Admin.Controllers

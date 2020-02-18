@@ -5,14 +5,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Blog.Api.Data;
+using Blog.Data;
 using Blog.Models;
 using Microsoft.AspNetCore.Cors;
 
 namespace Blog.Api.Controllers
 {
     [EnableCors]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class FeedsController : ControllerBase
     {
