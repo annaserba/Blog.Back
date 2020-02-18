@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -13,7 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
-using Blog.Api.Data;
+using Blog.Data;
 
 namespace Blog.Api
 {
@@ -29,12 +28,12 @@ namespace Blog.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var DATABASE = Environment.GetEnvironmentVariable("DATABASE");
+            var DATABASE = Environment.GetEnvironmentVariable("DATABASE") ?? Configuration.GetConnectionString("DefaultConnection");
             services.AddEntityFrameworkNpgsql().AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(DATABASE));
             
             services.AddControllers();
-            var CLIENT_URL = Environment.GetEnvironmentVariable("CLIENT_URL");
+            var CLIENT_URL = Environment.GetEnvironmentVariable("CLIENT_URL")??"localhost:8080";
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy(
@@ -59,7 +58,7 @@ namespace Blog.Api
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            app.UseCors();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
