@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Blog.Models;
 
-namespace Blog.Api.Data
+namespace Blog.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
