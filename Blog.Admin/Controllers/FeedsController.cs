@@ -16,6 +16,7 @@ namespace Blog.Admin.Controllers
 
         public FeedsController(ApplicationDbContext context)
         {
+            context.Database.Migrate();
             _context = context;
         }
 
