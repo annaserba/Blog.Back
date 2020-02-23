@@ -33,7 +33,7 @@ namespace Blog.Api
                 options.UseNpgsql(DATABASE));
             
             services.AddControllers();
-            var CLIENT_URL = Environment.GetEnvironmentVariable("CLIENT_URL")??"localhost:8080";
+            var CLIENT_URL = Environment.GetEnvironmentVariable("CLIENT_URL")?? Configuration.GetValue<string>("CLIENT_URL");
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy(
