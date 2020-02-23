@@ -12,7 +12,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{61A434AB-6BF1-4223-BA46-A6F364FA1843}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
-		Dockerfile = Dockerfile
 		heroku.yml = heroku.yml
 	EndProjectSection
 EndProject
