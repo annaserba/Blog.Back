@@ -24,6 +24,7 @@
     <PackageReference Include="Npgsql" Version="4.1.3.1" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.1.2" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.Design" Version="1.1.0" />
+    <PackageReference Include="TinyMCE" Version="5.2.0" />
   </ItemGroup>
 
 
@@ -34,6 +35,7 @@
 
   <ItemGroup>
     <Folder Include="Extensions\" />
+    <Folder Include="wwwroot\lib\tinymce\" />
   </ItemGroup>
 
 </Project>

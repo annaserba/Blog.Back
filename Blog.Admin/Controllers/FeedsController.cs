@@ -24,7 +24,7 @@ namespace Blog.Admin.Controllers
         // GET: Feeds
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Feed.ToListAsync());
+            return View(await _context.Feeds.ToListAsync());
         }
 
         // GET: Feeds/Details/5
@@ -35,7 +35,7 @@ namespace Blog.Admin.Controllers
                 return NotFound();
             }
 
-            var feed = await _context.Feed
+            var feed = await _context.Feeds
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (feed == null)
             {
@@ -48,7 +48,8 @@ namespace Blog.Admin.Controllers
         // GET: Feeds/Create
         public IActionResult Create()
         {
-            return View();
+            var feed = new Feed() { PostedOn=DateTime.UtcNow, Modified= DateTime.UtcNow };
+            return View(feed);
         }
 
         // POST: Feeds/Create
@@ -56,7 +57,7 @@ namespace Blog.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Title,ShortDescription,Description,Published,PostedOn,Modified,Language")] Feed feed)
+        public async Task<IActionResult> Create([Bind("ID,Title,ShortDescription,Description,Published,PostedOn,Modified,Language,UrlTileImage")] Feed feed)
         {
             if (ModelState.IsValid)
             {
@@ -75,10 +76,14 @@ namespace Blog.Admin.Controllers
                 return NotFound();
             }
 
-            var feed = await _context.Feed.FindAsync(id);
+            var feed = await _context.Feeds.FindAsync(id);
             if (feed == null)
             {
                 return NotFound();
+            }
+            else
+            {
+                feed.Modified = DateTime.UtcNow;
             }
             return View(feed);
         }
@@ -88,7 +93,7 @@ namespace Blog.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Title,ShortDescription,Description,Published,PostedOn,Modified,Language")] Feed feed)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Title,ShortDescription,Description,Published,PostedOn,Modified,Language,UrlTileImage")] Feed feed)
         {
             if (id != feed.ID)
             {
@@ -126,7 +131,7 @@ namespace Blog.Admin.Controllers
                 return NotFound();
             }
 
-            var feed = await _context.Feed
+            var feed = await _context.Feeds
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (feed == null)
             {
@@ -141,15 +146,15 @@ namespace Blog.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var feed = await _context.Feed.FindAsync(id);
-            _context.Feed.Remove(feed);
+            var feed = await _context.Feeds.FindAsync(id);
+            _context.Feeds.Remove(feed);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool FeedExists(int id)
         {
-            return _context.Feed.Any(e => e.ID == id);
+            return _context.Feeds.Any(e => e.ID == id);
         }
     }
 }

@@ -23,16 +23,16 @@ namespace Blog.Api.Controllers
 
         // GET: api/Feeds
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Feed>>> GetFeed()
+        public async Task<ActionResult<IEnumerable<Feed>>> GetFeeds()
         {
-            return await _context.Feed.ToListAsync();
+            return await _context.Feeds.ToListAsync();
         }
 
         // GET: api/Feeds/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Feed>> GetFeed(int id)
         {
-            var feed = await _context.Feed.FindAsync(id);
+            var feed = await _context.Feeds.FindAsync(id);
 
             if (feed == null)
             {
@@ -80,7 +80,7 @@ namespace Blog.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<Feed>> PostFeed(Feed feed)
         {
-            _context.Feed.Add(feed);
+            _context.Feeds.Add(feed);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetFeed", new { id = feed.ID }, feed);
@@ -90,13 +90,13 @@ namespace Blog.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Feed>> DeleteFeed(int id)
         {
-            var feed = await _context.Feed.FindAsync(id);
+            var feed = await _context.Feeds.FindAsync(id);
             if (feed == null)
             {
                 return NotFound();
             }
 
-            _context.Feed.Remove(feed);
+            _context.Feeds.Remove(feed);
             await _context.SaveChangesAsync();
 
             return feed;
@@ -104,7 +104,7 @@ namespace Blog.Api.Controllers
 
         private bool FeedExists(int id)
         {
-            return _context.Feed.Any(e => e.ID == id);
+            return _context.Feeds.Any(e => e.ID == id);
         }
     }
 }

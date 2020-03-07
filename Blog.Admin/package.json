@@ -1,0 +1,7 @@
+{
+  "name": "blog.admin",
+  "version": "1.0.0",
+  "devDependencies": {
+    "tinymce": "^5.2.0"
+  }
+}

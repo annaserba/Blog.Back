@@ -17,15 +17,14 @@ namespace Blog.Models
         public string ShortDescription { get; set; }
         [Required]
         public string Description { get; set; }
-
         public bool Published { get; set; }
 
-        public DateTime PostedOn { get; set; }
+        public DateTime PostedOn { get; set; } 
 
-        public DateTime? Modified { get; set; }
+        public DateTime Modified { get; set; } 
 
         public Language Language { get; set; }
-        public ICollection<Image> Images { get; set; }
+        public string UrlTileImage { get; set; }
 
     }
 }

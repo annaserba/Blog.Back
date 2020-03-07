@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Admin", "Blog.Admin\Blog.Admin.csproj", "{00B1CBCA-B635-48DA-8507-19C5152389D1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Api", "Blog.Api\Blog.Api.csproj", "{2D4568F7-5067-4C1C-A744-D30558C64EDD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{00B1CBCA-B635-48DA-8507-19C5152389D1} = {00B1CBCA-B635-48DA-8507-19C5152389D1}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Common", "Blog.Model\Blog.Common.csproj", "{77AAECE4-F597-4D5A-998C-399C5044BDA6}"
 EndProject
