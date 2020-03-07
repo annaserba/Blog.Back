@@ -12,6 +12,8 @@ using Blog.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Blog.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Blog.Admin
 {
@@ -30,11 +32,14 @@ namespace Blog.Admin
             var DATABASE = Environment.GetEnvironmentVariable("DATABASE")??Configuration.GetConnectionString("DefaultConnection");
             services.AddEntityFrameworkNpgsql().AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(DATABASE));
+            
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
-            
+            services.AddTransient<UserManager<IdentityUser>, UserManager<IdentityUser>>();
+            services.AddTransient<RoleManager<IdentityRole>, RoleManager<IdentityRole>>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -66,6 +71,8 @@ namespace Blog.Admin
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
+            
         }
+        
     }
 }
