@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Blog.Enums;
 
 namespace Blog.Models
 {
@@ -17,15 +18,14 @@ namespace Blog.Models
         [Required]
         public string Description { get; set; }
 
-        public string Meta { get; set; }
-
-        public string UrlSlug { get; set; }
-
         public bool Published { get; set; }
 
         public DateTime PostedOn { get; set; }
 
         public DateTime? Modified { get; set; }
+
+        public Language Language { get; set; }
+        public ICollection<Image> Images { get; set; }
 
     }
 }

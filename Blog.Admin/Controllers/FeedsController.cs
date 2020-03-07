@@ -18,7 +18,6 @@ namespace Blog.Admin.Controllers
 
         public FeedsController(ApplicationDbContext context)
         {
-            context.Database.Migrate();
             _context = context;
         }
 
@@ -57,7 +56,7 @@ namespace Blog.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Title,ShortDescription,Description,Meta,UrlSlug,Published,PostedOn,Modified")] Feed feed)
+        public async Task<IActionResult> Create([Bind("ID,Title,ShortDescription,Description,Published,PostedOn,Modified,Language")] Feed feed)
         {
             if (ModelState.IsValid)
             {
@@ -89,7 +88,7 @@ namespace Blog.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Title,ShortDescription,Description,Meta,UrlSlug,Published,PostedOn,Modified")] Feed feed)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Title,ShortDescription,Description,Published,PostedOn,Modified,Language")] Feed feed)
         {
             if (id != feed.ID)
             {

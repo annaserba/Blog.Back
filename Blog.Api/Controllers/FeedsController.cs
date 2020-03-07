@@ -7,12 +7,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Blog.Data;
 using Blog.Models;
-using Microsoft.AspNetCore.Cors;
 
 namespace Blog.Api.Controllers
 {
-    [EnableCors]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class FeedsController : ControllerBase
     {
@@ -20,7 +18,6 @@ namespace Blog.Api.Controllers
 
         public FeedsController(ApplicationDbContext context)
         {
-            context.Database.Migrate();
             _context = context;
         }
 
