@@ -23,16 +23,16 @@ namespace Blog.Api.Controllers
 
         // GET: api/Feeds
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Feed>>> GetFeeds()
+        public async Task<ActionResult<IEnumerable<Feed>>> GetFeeds(Blog.Enums.Language lang= Enums.Language.EN)
         {
-            return await _context.Feeds.ToListAsync();
+            return await _context.Feeds.Where(f=> f.Language == lang).ToListAsync();
         }
 
         // GET: api/Feeds/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Feed>> GetFeed(int id)
+        [HttpGet("{url}")]
+        public async Task<ActionResult<Feed>> GetFeed(string url)
         {
-            var feed = await _context.Feeds.FindAsync(id);
+            var feed = await _context.Feeds.FirstAsync(f=>f.Url==url);
 
             if (feed == null)
             {
@@ -41,7 +41,6 @@ namespace Blog.Api.Controllers
 
             return feed;
         }
-
         // PUT: api/Feeds/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.

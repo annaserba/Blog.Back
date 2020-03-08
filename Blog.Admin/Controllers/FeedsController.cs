@@ -48,7 +48,7 @@ namespace Blog.Admin.Controllers
         // GET: Feeds/Create
         public IActionResult Create()
         {
-            var feed = new Feed() { PostedOn=DateTime.UtcNow, Modified= DateTime.UtcNow };
+            var feed = new Feed() { PostedOn = DateTime.UtcNow, Modified = DateTime.UtcNow };
             return View(feed);
         }
 
@@ -57,7 +57,7 @@ namespace Blog.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Title,ShortDescription,Description,Published,PostedOn,Modified,Language,UrlTileImage")] Feed feed)
+        public async Task<IActionResult> Create([Bind("ID,Url,Language,Title,ShortDescription,Description,Published,PostedOn,Modified,UrlTileImage")] Feed feed)
         {
             if (ModelState.IsValid)
             {
@@ -93,7 +93,7 @@ namespace Blog.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Title,ShortDescription,Description,Published,PostedOn,Modified,Language,UrlTileImage")] Feed feed)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Url,Language,Title,ShortDescription,Description,Published,PostedOn,Modified,UrlTileImage")] Feed feed)
         {
             if (id != feed.ID)
             {
