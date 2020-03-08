@@ -12,19 +12,17 @@ namespace Blog.Models
         [Key]
         public int ID { get; set; }
         [Required]
+        public string Url { get; set; }
+        [Required]
+        public Language Language { get; set; }
+        [Required]
         public string Title { get; set; }
-
         public string ShortDescription { get; set; }
         [Required]
         public string Description { get; set; }
         public bool Published { get; set; }
-
         public DateTime PostedOn { get; set; } 
-
         public DateTime Modified { get; set; } 
-
-        public Language Language { get; set; }
         public string UrlTileImage { get; set; }
-
     }
 }
