@@ -30,9 +30,9 @@ namespace Blog.Api.Controllers
 
         // GET: api/Feeds/5
         [HttpGet("{url}")]
-        public async Task<ActionResult<Feed>> GetFeed(string url)
+        public async Task<ActionResult<Feed>> GetFeed(string url, Blog.Enums.Language lang = Enums.Language.EN)
         {
-            var feed = await _context.Feeds.FirstAsync(f=>f.Url==url);
+            var feed = await _context.Feeds.FirstAsync(f=>f.Url==url&& f.Language == lang);
 
             if (feed == null)
             {
