@@ -10,7 +10,7 @@ using Blog.Models;
 
 namespace Blog.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class FeedsController : ControllerBase
     {
@@ -23,16 +23,16 @@ namespace Blog.Api.Controllers
 
         // GET: api/Feeds
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Feed>>> GetFeeds(Blog.Enums.Language lang= Enums.Language.EN)
+        public async Task<ActionResult<IEnumerable<Feed>>> GetFeeds(Blog.Enums.Language lang = Enums.Language.EN)
         {
-            return await _context.Feeds.Where(f=> f.Language == lang).ToListAsync();
+            return await _context.Feeds.Where(f => f.Language == lang).ToListAsync();
         }
 
         // GET: api/Feeds/5
         [HttpGet("{url}")]
         public async Task<ActionResult<Feed>> GetFeed(string url, Blog.Enums.Language lang = Enums.Language.EN)
         {
-            var feed = await _context.Feeds.FirstAsync(f=>f.Url==url&& f.Language == lang);
+            var feed = await _context.Feeds.FirstAsync(f => f.Url == url && f.Language == lang);
 
             if (feed == null)
             {
@@ -41,6 +41,7 @@ namespace Blog.Api.Controllers
 
             return feed;
         }
+
         // PUT: api/Feeds/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.

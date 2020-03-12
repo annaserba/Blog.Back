@@ -57,7 +57,7 @@ namespace Blog.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Url,Language,Title,ShortDescription,Description,Published,PostedOn,Modified,UrlTileImage")] Feed feed)
+        public async Task<IActionResult> Create([Bind("ID,Url,Language,Title,Excerpt,Content,Published,PostedOn,Modified,UrlTileImage,CommentStatus,Type,MetaDescription")] Feed feed)
         {
             if (ModelState.IsValid)
             {
@@ -93,7 +93,7 @@ namespace Blog.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Url,Language,Title,ShortDescription,Description,Published,PostedOn,Modified,UrlTileImage")] Feed feed)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Url,Language,Title,Excerpt,Content,Published,PostedOn,Modified,UrlTileImage,CommentStatus,Type,MetaDescription")] Feed feed)
         {
             if (id != feed.ID)
             {
