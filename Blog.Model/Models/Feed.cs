@@ -17,12 +17,15 @@ namespace Blog.Models
         public Language Language { get; set; }
         [Required]
         public string Title { get; set; }
-        public string ShortDescription { get; set; }
+        public string Excerpt { get; set; }
         [Required]
-        public string Description { get; set; }
+        public string Content { get; set; }
         public bool Published { get; set; }
         public DateTime PostedOn { get; set; } 
         public DateTime Modified { get; set; } 
         public string UrlTileImage { get; set; }
+        public bool CommentStatus { get; set; }
+        public FeedType Type { get; set; }
+        public string MetaDescription { get; set; }
     }
 }
