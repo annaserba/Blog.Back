@@ -6,6 +6,6 @@ namespace Blog.Enums
 {
     public enum FeedType
     {
-        Standard
+        Article, Note
     }
 }
