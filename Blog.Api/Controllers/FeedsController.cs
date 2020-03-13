@@ -21,14 +21,12 @@ namespace Blog.Api.Controllers
             _context = context;
         }
 
-        // GET: api/Feeds
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Feed>>> GetFeeds(Blog.Enums.Language lang = Enums.Language.EN)
+        public async Task<ActionResult<IEnumerable<BasicFeed>>> GetFeeds(Blog.Enums.Language lang = Enums.Language.EN)
         {
             return await _context.Feeds.Where(f => f.Language == lang).ToListAsync();
         }
 
-        // GET: api/Feeds/5
         [HttpGet("{url}")]
         public async Task<ActionResult<Feed>> GetFeed(string url, Blog.Enums.Language lang = Enums.Language.EN)
         {
@@ -42,69 +40,11 @@ namespace Blog.Api.Controllers
             return feed;
         }
 
-        // PUT: api/Feeds/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutFeed(int id, Feed feed)
+
+
+        private bool FeedExists(string url, Blog.Enums.Language lang = Enums.Language.EN)
         {
-            if (id != feed.ID)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(feed).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!FeedExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Feeds
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPost]
-        public async Task<ActionResult<Feed>> PostFeed(Feed feed)
-        {
-            _context.Feeds.Add(feed);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetFeed", new { id = feed.ID }, feed);
-        }
-
-        // DELETE: api/Feeds/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<Feed>> DeleteFeed(int id)
-        {
-            var feed = await _context.Feeds.FindAsync(id);
-            if (feed == null)
-            {
-                return NotFound();
-            }
-
-            _context.Feeds.Remove(feed);
-            await _context.SaveChangesAsync();
-
-            return feed;
-        }
-
-        private bool FeedExists(int id)
-        {
-            return _context.Feeds.Any(e => e.ID == id);
+            return _context.Feeds.Any(e => e.Url == url&&e.Language== lang);
         }
     }
 }
