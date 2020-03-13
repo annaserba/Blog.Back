@@ -7,10 +7,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Blog.Data;
 using Blog.Models;
+using Microsoft.AspNetCore.Cors;
 
 namespace Blog.Api.Controllers
 {
     [Route("[controller]")]
+    [EnableCors]
     [ApiController]
     public class FeedsController : ControllerBase
     {
