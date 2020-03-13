@@ -24,15 +24,15 @@ namespace Blog.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<BasicFeed>>> GetFeeds(Blog.Enums.Language lang = Enums.Language.EN)
+        public async Task<ActionResult<IEnumerable<BasicFeed>>> GetFeeds(Blog.Enums.Language lang = Enums.Language.RU, Blog.Enums.FeedType type= Enums.FeedType.None)
         {
-            return await _context.Feeds.Where(f => f.Language == lang).ToListAsync();
+            return await _context.Feeds.Where(f => f.Published && f.Language == lang && (f.Type == type|| type== Enums.FeedType.None)).ToListAsync<BasicFeed>();
         }
 
         [HttpGet("{url}")]
-        public async Task<ActionResult<Feed>> GetFeed(string url, Blog.Enums.Language lang = Enums.Language.EN)
+        public async Task<ActionResult<Feed>> GetFeed(string url, Blog.Enums.Language lang = Enums.Language.RU, Blog.Enums.FeedType type = Enums.FeedType.None)
         {
-            var feed = await _context.Feeds.FirstAsync(f => f.Url == url && f.Language == lang);
+            var feed = await _context.Feeds.Where(f=>f.Published&& f.Url == url && f.Language == lang && (f.Type == type || type == Enums.FeedType.None)).FirstAsync();
 
             if (feed == null)
             {
@@ -42,11 +42,5 @@ namespace Blog.Api.Controllers
             return feed;
         }
 
-
-
-        private bool FeedExists(string url, Blog.Enums.Language lang = Enums.Language.EN)
-        {
-            return _context.Feeds.Any(e => e.Url == url&&e.Language== lang);
-        }
     }
 }
