@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Cors;
 namespace Blog.Api.Controllers
 {
     [Route("[controller]")]
-    [EnableCors]
+    [EnableCors("Feeds")]
     [ApiController]
     public class FeedsController : ControllerBase
     {
