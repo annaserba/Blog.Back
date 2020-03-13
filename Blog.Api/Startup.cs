@@ -36,7 +36,7 @@ namespace Blog.Api
             var CLIENT_URL = Environment.GetEnvironmentVariable("CLIENT_URL")?? Configuration.GetValue<string>("CLIENT_URL");
             services.AddCors(options =>
             {
-                options.AddDefaultPolicy(
+                options.AddPolicy("Feeds",
                     builder =>
                     {
                         builder.WithOrigins(CLIENT_URL)
