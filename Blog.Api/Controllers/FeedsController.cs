@@ -32,7 +32,7 @@ namespace Blog.Api.Controllers
         [HttpGet("{url}")]
         public async Task<ActionResult<Feed>> GetFeed(string url, Blog.Enums.Language lang = Enums.Language.RU, Blog.Enums.FeedType type = Enums.FeedType.None)
         {
-            var feed = await _context.Feeds.Where(f=>f.Published&& f.Url == url && f.Language == lang && (f.Type == type || type == Enums.FeedType.None)).FirstAsync();
+            var feed = await _context.Feeds.Where(f=>f.Url == url && f.Language == lang && (f.Type == type || type == Enums.FeedType.None)).FirstAsync();
 
             if (feed == null)
             {
