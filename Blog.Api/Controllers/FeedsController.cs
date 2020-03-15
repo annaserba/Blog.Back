@@ -24,15 +24,15 @@ namespace Blog.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<BasicFeed>>> GetFeeds(Blog.Enums.Language lang = Enums.Language.RU, Blog.Enums.FeedType type= Enums.FeedType.None)
+        public async Task<ActionResult<IEnumerable<BasicFeed>>> GetFeeds(Blog.Enums.Language lang = Enums.Language.RU)
         {
-            return await _context.Feeds.Where(f => f.Published && f.Language == lang && (f.Type == type|| type== Enums.FeedType.None)).ToListAsync<BasicFeed>();
+            return await _context.Feeds.Where(f => f.Published && f.Language == lang ).ToListAsync<BasicFeed>();
         }
 
         [HttpGet("{url}")]
-        public async Task<ActionResult<Feed>> GetFeed(string url, Blog.Enums.Language lang = Enums.Language.RU, Blog.Enums.FeedType type = Enums.FeedType.None)
+        public async Task<ActionResult<Feed>> GetFeed(string url, Blog.Enums.Language lang = Enums.Language.RU)
         {
-            var feed = await _context.Feeds.Where(f=>f.Url == url && f.Language == lang && (f.Type == type || type == Enums.FeedType.None)).FirstAsync();
+            var feed = await _context.Feeds.Where(f=>f.Url == url && f.Language == lang ).FirstAsync();
 
             if (feed == null)
             {

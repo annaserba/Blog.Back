@@ -14,5 +14,7 @@ namespace Blog.Data
         {
         }
         public DbSet<Blog.Models.Feed> Feeds { get; set; }
+        public DbSet<Blog.Models.Tag> Tags { get; set; }
+        public DbSet<Blog.Models.Category> Categories { get; set; }
     }
 }

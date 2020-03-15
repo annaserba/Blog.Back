@@ -22,7 +22,8 @@ namespace Blog.Models
         public DateTime PostedOn { get; set; }
         public DateTime Modified { get; set; }
         public string UrlTileImage { get; set; }
-        public FeedType Type { get; set; }
+        public ICollection<FeedTag> FeedTags { get; set; }
+        public ICollection<FeedCategory> FeedCategories { get; set; }
     }
     public class Feed: BasicFeed
     {
