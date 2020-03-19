@@ -49,7 +49,12 @@ namespace Blog.Admin.Controllers
         public IActionResult Create()
         {
             var model =new FeedView(){
-                Feed = new Feed() { PostedOn = DateTime.UtcNow, Modified = DateTime.UtcNow },
+                Feed = new Feed() { 
+                    PostedOn = DateTime.UtcNow, 
+                    Modified = DateTime.UtcNow, 
+                    FeedTags = new List<FeedTag>(),
+                    FeedCategories=new List<FeedCategory>()
+                },
                 AllTags = _context.Tags.ToList(),
                 AllCategories = _context.Categories.ToList()
             };
@@ -81,6 +86,8 @@ namespace Blog.Admin.Controllers
             }
 
             var feed = await _context.Feeds.FindAsync(id);
+            feed.FeedTags = _context.FeedTags.Where(c => c.FeedID == feed.ID).ToList();
+            feed.FeedCategories = _context.FeedCategories.Where(c => c.FeedID == feed.ID).ToList();
             if (feed == null)
             {
                 return NotFound();
@@ -118,16 +125,28 @@ namespace Blog.Admin.Controllers
                     _context.Update(feedView.Feed);
                     if (Tags != null)
                     {
+                        _context.FeedTags.RemoveRange(_context.FeedTags.Where(c => c.FeedID == feedView.Feed.ID).ToList());
                         Tags?.ForEach(t =>
                         {
-                            _context.FeedTags.Add(new FeedTag() { TagID = t, FeedID = feedView.Feed.ID });
+                             _context.FeedTags.Add(new FeedTag() { 
+                                 TagID = t, 
+                                 FeedID = feedView.Feed.ID,
+                                 Feed= feedView.Feed,
+                                 Tag =_context.Tags.Find(t)
+                            });
                         });
                     }
                     if (Categories != null)
                     {
+                        _context.FeedCategories.RemoveRange(_context.FeedCategories.Where(c => c.FeedID == feedView.Feed.ID).ToList());
                         Categories?.ForEach(c =>
                         {
-                            _context.FeedCategories.Add(new FeedCategory() { CategoryID = c, FeedID = feedView.Feed.ID });
+                            _context.FeedCategories.Add(new FeedCategory() { 
+                                CategoryID = c, 
+                                FeedID = feedView.Feed.ID ,
+                                Feed = feedView.Feed,
+                                Category = _context.Categories.Find(c)
+                            });
                         });
                     }
                     await _context.SaveChangesAsync();

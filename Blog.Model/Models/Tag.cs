@@ -19,7 +19,7 @@ namespace Blog.Models
         [Required]
         public string Name { get; set; }
         [JsonIgnore]
-        public ICollection<FeedTag> Feeds { get; set; }
+        public ICollection<FeedTag> TagFeeds { get; set; }
     }
     public class Tag: BasicTag
     {
