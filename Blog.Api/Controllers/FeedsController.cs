@@ -26,7 +26,7 @@ namespace Blog.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<BasicFeed>>> GetFeeds(Blog.Enums.Language lang = Enums.Language.RU)
         {
-            return await _context.Feeds.Where(f => f.Published && f.Language == lang ).ToListAsync<BasicFeed>();
+            return await _context.Feeds.Where(f => f.Published && f.Language == lang).ToListAsync<BasicFeed>();
         }
 
         [HttpGet("{url}")]

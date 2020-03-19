@@ -48,8 +48,12 @@ namespace Blog.Admin.Controllers
         // GET: Feeds/Create
         public IActionResult Create()
         {
-            var feed = new Feed() { PostedOn = DateTime.UtcNow, Modified = DateTime.UtcNow };
-            return View(feed);
+            var model =new FeedView(){
+                Feed = new Feed() { PostedOn = DateTime.UtcNow, Modified = DateTime.UtcNow },
+                AllTags = _context.Tags.ToList(),
+                AllCategories = _context.Categories.ToList()
+            };
+            return View(model);
         }
 
         // POST: Feeds/Create
@@ -57,7 +61,7 @@ namespace Blog.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Feed feed)
+        public async Task<IActionResult> Create(Feed feed, List<string> Tags)
         {
             if (ModelState.IsValid)
             {
@@ -84,8 +88,15 @@ namespace Blog.Admin.Controllers
             else
             {
                 feed.Modified = DateTime.UtcNow;
+                var model = new FeedView()
+                {
+                    Feed = feed,
+                    AllTags = _context.Tags.ToList(),
+                    AllCategories = _context.Categories.ToList()
+                };
+              
+                return View(model);
             }
-            return View(feed);
         }
 
         // POST: Feeds/Edit/5
@@ -93,9 +104,9 @@ namespace Blog.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Feed feed)
+        public async Task<IActionResult> Edit(int id, FeedView feedView, List<int> Tags, List<int> Categories)
         {
-            if (id != feed.ID)
+            if (id != feedView.Feed.ID)
             {
                 return NotFound();
             }
@@ -104,12 +115,26 @@ namespace Blog.Admin.Controllers
             {
                 try
                 {
-                    _context.Update(feed);
+                    _context.Update(feedView.Feed);
+                    if (Tags != null)
+                    {
+                        Tags?.ForEach(t =>
+                        {
+                            _context.FeedTags.Add(new FeedTag() { TagID = t, FeedID = feedView.Feed.ID });
+                        });
+                    }
+                    if (Categories != null)
+                    {
+                        Categories?.ForEach(c =>
+                        {
+                            _context.FeedCategories.Add(new FeedCategory() { CategoryID = c, FeedID = feedView.Feed.ID });
+                        });
+                    }
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!FeedExists(feed.ID))
+                    if (!FeedExists(feedView.Feed.ID))
                     {
                         return NotFound();
                     }
@@ -120,7 +145,7 @@ namespace Blog.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(feed);
+            return View(feedView.Feed);
         }
 
         // GET: Feeds/Delete/5

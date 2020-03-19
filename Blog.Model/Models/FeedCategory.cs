@@ -12,7 +12,7 @@ namespace Blog.Models
         public int FeedID { get; set; }
         public Feed Feed { get; set; }
 
-        public string CategoryID { get; set; }
+        public int CategoryID { get; set; }
         public Category Category { get; set; }
     }
 }

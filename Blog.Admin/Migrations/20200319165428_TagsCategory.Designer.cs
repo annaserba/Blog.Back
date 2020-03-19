@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Blog.Admin.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200315165133_addExcerpt")]
-    partial class addExcerpt
+    [Migration("20200319165428_TagsCategory")]
+    partial class TagsCategory
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -105,10 +105,7 @@ namespace Blog.Admin.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<string>("CategoryID")
-                        .HasColumnType("text");
-
-                    b.Property<int?>("CategoryID1")
+                    b.Property<int>("CategoryID")
                         .HasColumnType("integer");
 
                     b.Property<int>("FeedID")
@@ -116,11 +113,11 @@ namespace Blog.Admin.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("CategoryID1");
+                    b.HasIndex("CategoryID");
 
                     b.HasIndex("FeedID");
 
-                    b.ToTable("FeedCategory");
+                    b.ToTable("FeedCategories");
                 });
 
             modelBuilder.Entity("Blog.Models.FeedTag", b =>
@@ -133,19 +130,16 @@ namespace Blog.Admin.Migrations
                     b.Property<int>("FeedID")
                         .HasColumnType("integer");
 
-                    b.Property<string>("TagID")
-                        .HasColumnType("text");
-
-                    b.Property<int?>("TagID1")
+                    b.Property<int>("TagID")
                         .HasColumnType("integer");
 
                     b.HasKey("ID");
 
                     b.HasIndex("FeedID");
 
-                    b.HasIndex("TagID1");
+                    b.HasIndex("TagID");
 
-                    b.ToTable("FeedTag");
+                    b.ToTable("FeedTags");
                 });
 
             modelBuilder.Entity("Blog.Models.Tag", b =>
@@ -375,8 +369,10 @@ namespace Blog.Admin.Migrations
             modelBuilder.Entity("Blog.Models.FeedCategory", b =>
                 {
                     b.HasOne("Blog.Models.Category", "Category")
-                        .WithMany("FeedCategories")
-                        .HasForeignKey("CategoryID1");
+                        .WithMany("Feeds")
+                        .HasForeignKey("CategoryID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Blog.Models.Feed", "Feed")
                         .WithMany("FeedCategories")
@@ -394,8 +390,10 @@ namespace Blog.Admin.Migrations
                         .IsRequired();
 
                     b.HasOne("Blog.Models.Tag", "Tag")
-                        .WithMany("FeedTags")
-                        .HasForeignKey("TagID1");
+                        .WithMany("Feeds")
+                        .HasForeignKey("TagID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

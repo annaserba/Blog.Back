@@ -3,7 +3,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Blog.Admin.Migrations
 {
-    public partial class addTagsAndCategories : Migration
+    public partial class TagsCategory : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -15,7 +15,8 @@ namespace Blog.Admin.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Url = table.Column<string>(nullable: false),
                     Language = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(nullable: false)
+                    Name = table.Column<string>(nullable: false),
+                    Excerpt = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -30,7 +31,8 @@ namespace Blog.Admin.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Url = table.Column<string>(nullable: false),
                     Language = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(nullable: false)
+                    Name = table.Column<string>(nullable: false),
+                    Excerpt = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -38,26 +40,25 @@ namespace Blog.Admin.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "FeedCategory",
+                name: "FeedCategories",
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     FeedID = table.Column<int>(nullable: false),
-                    CategoryID = table.Column<string>(nullable: true),
-                    CategoryID1 = table.Column<int>(nullable: true)
+                    CategoryID = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FeedCategory", x => x.ID);
+                    table.PrimaryKey("PK_FeedCategories", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_FeedCategory_Categories_CategoryID1",
-                        column: x => x.CategoryID1,
+                        name: "FK_FeedCategories_Categories_CategoryID",
+                        column: x => x.CategoryID,
                         principalTable: "Categories",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_FeedCategory_Feeds_FeedID",
+                        name: "FK_FeedCategories_Feeds_FeedID",
                         column: x => x.FeedID,
                         principalTable: "Feeds",
                         principalColumn: "ID",
@@ -65,60 +66,59 @@ namespace Blog.Admin.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "FeedTag",
+                name: "FeedTags",
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     FeedID = table.Column<int>(nullable: false),
-                    TagID = table.Column<string>(nullable: true),
-                    TagID1 = table.Column<int>(nullable: true)
+                    TagID = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FeedTag", x => x.ID);
+                    table.PrimaryKey("PK_FeedTags", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_FeedTag_Feeds_FeedID",
+                        name: "FK_FeedTags_Feeds_FeedID",
                         column: x => x.FeedID,
                         principalTable: "Feeds",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_FeedTag_Tags_TagID1",
-                        column: x => x.TagID1,
+                        name: "FK_FeedTags_Tags_TagID",
+                        column: x => x.TagID,
                         principalTable: "Tags",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_FeedCategory_CategoryID1",
-                table: "FeedCategory",
-                column: "CategoryID1");
+                name: "IX_FeedCategories_CategoryID",
+                table: "FeedCategories",
+                column: "CategoryID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FeedCategory_FeedID",
-                table: "FeedCategory",
+                name: "IX_FeedCategories_FeedID",
+                table: "FeedCategories",
                 column: "FeedID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FeedTag_FeedID",
-                table: "FeedTag",
+                name: "IX_FeedTags_FeedID",
+                table: "FeedTags",
                 column: "FeedID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FeedTag_TagID1",
-                table: "FeedTag",
-                column: "TagID1");
+                name: "IX_FeedTags_TagID",
+                table: "FeedTags",
+                column: "TagID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "FeedCategory");
+                name: "FeedCategories");
 
             migrationBuilder.DropTable(
-                name: "FeedTag");
+                name: "FeedTags");
 
             migrationBuilder.DropTable(
                 name: "Categories");
