@@ -12,22 +12,22 @@ using Microsoft.AspNetCore.Authorization;
 namespace Blog.Admin.Controllers
 {
     [Authorize(Roles = "Admin")]
-    public class FeedsController : Controller
+    public class TagsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public FeedsController(ApplicationDbContext context)
+        public TagsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Feeds
+        // GET: Tags
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Feeds.ToListAsync());
+            return View(await _context.Tags.ToListAsync());
         }
 
-        // GET: Feeds/Details/5
+        // GET: Tags/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -35,44 +35,39 @@ namespace Blog.Admin.Controllers
                 return NotFound();
             }
 
-            var feed = await _context.Feeds
+            var tag = await _context.Tags
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (feed == null)
+            if (tag == null)
             {
                 return NotFound();
             }
 
-            return View(feed);
+            return View(tag);
         }
 
-        // GET: Feeds/Create
+        // GET: Tags/Create
         public IActionResult Create()
         {
-            var model =new FeedView(){
-                Feed = new Feed() { PostedOn = DateTime.UtcNow, Modified = DateTime.UtcNow },
-                AllTags = _context.Tags.ToList(),
-                AllCategories = _context.Categories.ToList()
-            };
-            return View(model);
+            return View();
         }
 
-        // POST: Feeds/Create
+        // POST: Tags/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Feed feed, List<string> Tags)
+        public async Task<IActionResult> Create( Tag tag)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(feed);
+                _context.Add(tag);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(feed);
+            return View(tag);
         }
 
-        // GET: Feeds/Edit/5
+        // GET: Tags/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -80,33 +75,22 @@ namespace Blog.Admin.Controllers
                 return NotFound();
             }
 
-            var feed = await _context.Feeds.FindAsync(id);
-            if (feed == null)
+            var tag = await _context.Tags.FindAsync(id);
+            if (tag == null)
             {
                 return NotFound();
             }
-            else
-            {
-                feed.Modified = DateTime.UtcNow;
-                var model = new FeedView()
-                {
-                    Feed = feed,
-                    AllTags = _context.Tags.ToList(),
-                    AllCategories = _context.Categories.ToList()
-                };
-              
-                return View(model);
-            }
+            return View(tag);
         }
 
-        // POST: Feeds/Edit/5
+        // POST: Tags/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, FeedView feedView, List<int> Tags, List<int> Categories)
+        public async Task<IActionResult> Edit(int id, Tag tag)
         {
-            if (id != feedView.Feed.ID)
+            if (id != tag.ID)
             {
                 return NotFound();
             }
@@ -115,26 +99,12 @@ namespace Blog.Admin.Controllers
             {
                 try
                 {
-                    _context.Update(feedView.Feed);
-                    if (Tags != null)
-                    {
-                        Tags?.ForEach(t =>
-                        {
-                            _context.FeedTags.Add(new FeedTag() { TagID = t, FeedID = feedView.Feed.ID });
-                        });
-                    }
-                    if (Categories != null)
-                    {
-                        Categories?.ForEach(c =>
-                        {
-                            _context.FeedCategories.Add(new FeedCategory() { CategoryID = c, FeedID = feedView.Feed.ID });
-                        });
-                    }
+                    _context.Update(tag);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!FeedExists(feedView.Feed.ID))
+                    if (!TagExists(tag.ID))
                     {
                         return NotFound();
                     }
@@ -145,10 +115,10 @@ namespace Blog.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(feedView.Feed);
+            return View(tag);
         }
 
-        // GET: Feeds/Delete/5
+        // GET: Tags/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -156,30 +126,30 @@ namespace Blog.Admin.Controllers
                 return NotFound();
             }
 
-            var feed = await _context.Feeds
+            var tag = await _context.Tags
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (feed == null)
+            if (tag == null)
             {
                 return NotFound();
             }
 
-            return View(feed);
+            return View(tag);
         }
 
-        // POST: Feeds/Delete/5
+        // POST: Tags/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var feed = await _context.Feeds.FindAsync(id);
-            _context.Feeds.Remove(feed);
+            var tag = await _context.Tags.FindAsync(id);
+            _context.Tags.Remove(tag);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool FeedExists(int id)
+        private bool TagExists(int id)
         {
-            return _context.Feeds.Any(e => e.ID == id);
+            return _context.Tags.Any(e => e.ID == id);
         }
     }
 }

@@ -12,22 +12,22 @@ using Microsoft.AspNetCore.Authorization;
 namespace Blog.Admin.Controllers
 {
     [Authorize(Roles = "Admin")]
-    public class FeedsController : Controller
+    public class CategoriesController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public FeedsController(ApplicationDbContext context)
+        public CategoriesController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Feeds
+        // GET: Categories
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Feeds.ToListAsync());
+            return View(await _context.Categories.ToListAsync());
         }
 
-        // GET: Feeds/Details/5
+        // GET: Categories/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -35,44 +35,39 @@ namespace Blog.Admin.Controllers
                 return NotFound();
             }
 
-            var feed = await _context.Feeds
+            var category = await _context.Categories
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (feed == null)
+            if (category == null)
             {
                 return NotFound();
             }
 
-            return View(feed);
+            return View(category);
         }
 
-        // GET: Feeds/Create
+        // GET: Categories/Create
         public IActionResult Create()
         {
-            var model =new FeedView(){
-                Feed = new Feed() { PostedOn = DateTime.UtcNow, Modified = DateTime.UtcNow },
-                AllTags = _context.Tags.ToList(),
-                AllCategories = _context.Categories.ToList()
-            };
-            return View(model);
+            return View();
         }
 
-        // POST: Feeds/Create
+        // POST: Categories/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Feed feed, List<string> Tags)
+        public async Task<IActionResult> Create( Category category)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(feed);
+                _context.Add(category);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(feed);
+            return View(category);
         }
 
-        // GET: Feeds/Edit/5
+        // GET: Categories/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -80,33 +75,22 @@ namespace Blog.Admin.Controllers
                 return NotFound();
             }
 
-            var feed = await _context.Feeds.FindAsync(id);
-            if (feed == null)
+            var category = await _context.Categories.FindAsync(id);
+            if (category == null)
             {
                 return NotFound();
             }
-            else
-            {
-                feed.Modified = DateTime.UtcNow;
-                var model = new FeedView()
-                {
-                    Feed = feed,
-                    AllTags = _context.Tags.ToList(),
-                    AllCategories = _context.Categories.ToList()
-                };
-              
-                return View(model);
-            }
+            return View(category);
         }
 
-        // POST: Feeds/Edit/5
+        // POST: Categories/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, FeedView feedView, List<int> Tags, List<int> Categories)
+        public async Task<IActionResult> Edit(int id, Category category)
         {
-            if (id != feedView.Feed.ID)
+            if (id != category.ID)
             {
                 return NotFound();
             }
@@ -115,26 +99,12 @@ namespace Blog.Admin.Controllers
             {
                 try
                 {
-                    _context.Update(feedView.Feed);
-                    if (Tags != null)
-                    {
-                        Tags?.ForEach(t =>
-                        {
-                            _context.FeedTags.Add(new FeedTag() { TagID = t, FeedID = feedView.Feed.ID });
-                        });
-                    }
-                    if (Categories != null)
-                    {
-                        Categories?.ForEach(c =>
-                        {
-                            _context.FeedCategories.Add(new FeedCategory() { CategoryID = c, FeedID = feedView.Feed.ID });
-                        });
-                    }
+                    _context.Update(category);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!FeedExists(feedView.Feed.ID))
+                    if (!CategoryExists(category.ID))
                     {
                         return NotFound();
                     }
@@ -145,10 +115,10 @@ namespace Blog.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(feedView.Feed);
+            return View(category);
         }
 
-        // GET: Feeds/Delete/5
+        // GET: Categories/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -156,30 +126,30 @@ namespace Blog.Admin.Controllers
                 return NotFound();
             }
 
-            var feed = await _context.Feeds
+            var category = await _context.Categories
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (feed == null)
+            if (category == null)
             {
                 return NotFound();
             }
 
-            return View(feed);
+            return View(category);
         }
 
-        // POST: Feeds/Delete/5
+        // POST: Categories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var feed = await _context.Feeds.FindAsync(id);
-            _context.Feeds.Remove(feed);
+            var category = await _context.Categories.FindAsync(id);
+            _context.Categories.Remove(category);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool FeedExists(int id)
+        private bool CategoryExists(int id)
         {
-            return _context.Feeds.Any(e => e.ID == id);
+            return _context.Categories.Any(e => e.ID == id);
         }
     }
 }

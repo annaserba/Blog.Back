@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace Blog.Enums
 {
     public enum Language
     {
-        EN,RU
+        [Display(Name = "English")]
+        EN,
+        [Display(Name = "Русский")]
+        RU
     }
 }
