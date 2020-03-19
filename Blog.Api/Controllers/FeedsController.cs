@@ -24,9 +24,27 @@ namespace Blog.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<BasicFeed>>> GetFeeds(Blog.Enums.Language lang = Enums.Language.RU)
+        public IEnumerable<BasicFeedApi> GetFeeds(Blog.Enums.Language lang = Enums.Language.RU)
         {
-            return await _context.Feeds.Where(f => f.Published && f.Language == lang).ToListAsync<BasicFeed>();
+            var feeds = _context.Feeds.Where(f => f.Published && f.Language == lang)
+                .ToList().Select(f => {
+                    SortedList<string, string> categories = new SortedList<string, string>();
+                    _context.FeedCategories.Where(ft => ft.Feed.ID == f.ID).Select(c=>c.Category).ToList().ForEach(fc => {
+                        categories.Add(fc.Url, fc.Name);
+                    });
+                    SortedList<string, string> tags = new SortedList<string, string>();
+                    _context.FeedTags.Where(ft => ft.Feed.ID == f.ID).Select(t=>t.Tag).ToList().ForEach(ft => {
+                        tags.Add(ft.Url, ft.Name);
+                    });
+                    var result = new BasicFeedApi()
+                    {
+                        Feed = f,
+                        Tags = tags,
+                        Categories= categories
+                    };
+            return result; 
+                });
+            return feeds.ToList();
         }
 
         [HttpGet("{url}")]

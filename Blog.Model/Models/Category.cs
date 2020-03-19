@@ -19,7 +19,7 @@ namespace Blog.Models
         [Required]
         public string Name { get; set; }
         [JsonIgnore]
-        public ICollection<FeedCategory> Feeds { get; set; }
+        public ICollection<FeedCategory> CategoryFeeds { get; set; }
     }
     public class Category: BasicCategory
     {
