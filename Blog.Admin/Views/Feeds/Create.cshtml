@@ -10,7 +10,7 @@
 <h4>Feed</h4>
 <hr />
 <div class="row">
-    <div class="col-md-6 col-xs-12">
+    <div class="col-md-12 col-xs-12">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -93,8 +93,11 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
-<script src="https://cdn.tiny.cloud/1/98marms65dn6j9z01gqk45op5ndsjaoar1g5ymqegklhn4eh/tinymce/5/tinymce.min.js" referrerpolicy="origin" /></script>
-<script>tinymce.init({ selector: '#Feed_Content' });</script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/trumbowyg/dist/trumbowyg.min.js"></script>
+<script>
+    $('#Feed_Content').trumbowyg({});
+</script>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
