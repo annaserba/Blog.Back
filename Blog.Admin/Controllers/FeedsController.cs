@@ -53,10 +53,12 @@ namespace Blog.Admin.Controllers
                     PostedOn = DateTime.UtcNow, 
                     Modified = DateTime.UtcNow, 
                     FeedTags = new List<FeedTag>(),
-                    FeedCategories=new List<FeedCategory>()
+                    FeedCategories=new List<FeedCategory>(),
+                    FeedSources=new List<FeedSource>()
                 },
                 AllTags = _context.Tags.ToList(),
-                AllCategories = _context.Categories.ToList()
+                AllCategories = _context.Categories.ToList(),
+                AllSources=_context.Sources.ToList()
             };
             return View(model);
         }
@@ -85,9 +87,10 @@ namespace Blog.Admin.Controllers
                 return NotFound();
             }
 
-            var feed = await _context.Feeds.FindAsync(id);
-            feed.FeedTags = _context.FeedTags.Where(c => c.FeedID == feed.ID).ToList();
-            feed.FeedCategories = _context.FeedCategories.Where(c => c.FeedID == feed.ID).ToList();
+            var feed = await _context.Feeds
+                .Include("FeedTags")
+                .Include("FeedCategories")
+                .FirstAsync(f=>f.ID==id);
             if (feed == null)
             {
                 return NotFound();
@@ -99,7 +102,8 @@ namespace Blog.Admin.Controllers
                 {
                     Feed = feed,
                     AllTags = _context.Tags.ToList(),
-                    AllCategories = _context.Categories.ToList()
+                    AllCategories = _context.Categories.ToList(),
+                    AllSources=_context.Sources.ToList()
                 };
               
                 return View(model);
@@ -111,7 +115,7 @@ namespace Blog.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, FeedView feedView, List<int> Tags, List<int> Categories)
+        public async Task<IActionResult> Edit(int id, FeedView feedView, List<int> Tags, List<int> Categories,List<int> Sources)
         {
             if (id != feedView.Feed.ID)
             {
@@ -146,6 +150,20 @@ namespace Blog.Admin.Controllers
                                 FeedID = feedView.Feed.ID ,
                                 Feed = feedView.Feed,
                                 Category = _context.Categories.Find(c)
+                            });
+                        });
+                    }
+                    if (Sources != null)
+                    {
+                        _context.FeedSources.RemoveRange(_context.FeedSources.Where(c => c.FeedID == feedView.Feed.ID).ToList());
+                        Sources?.ForEach(c =>
+                        {
+                            _context.FeedSources.Add(new FeedSource()
+                            {
+                                SourceID = c,
+                                FeedID = feedView.Feed.ID,
+                                Feed = feedView.Feed,
+                                Source = _context.Sources.Find(c)
                             });
                         });
                     }
