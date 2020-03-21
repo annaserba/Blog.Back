@@ -90,6 +90,7 @@ namespace Blog.Admin.Controllers
             var feed = await _context.Feeds
                 .Include("FeedTags")
                 .Include("FeedCategories")
+                .Include("FeedSources")
                 .FirstAsync(f=>f.ID==id);
             if (feed == null)
             {
