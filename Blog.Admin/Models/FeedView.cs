@@ -12,6 +12,7 @@ namespace Blog.Models
         public Feed Feed { get; set; }
         public List<Tag> AllTags { get; set; }
         public List<Category> AllCategories { get; set; }
+        public List<Source> AllSources { get; set; }
         public List<SelectListItem> TagsView
         {
             get
@@ -37,6 +38,27 @@ namespace Blog.Models
             {
                 List<Category> selected = Feed?.FeedCategories?.Select(f => f.Category)?.ToList() ?? new List<Category>();
                 List<Category> noSelected = AllCategories?.Where(c => !selected.Contains(c))?.ToList() ?? new List<Category>();
+                var result = selected.Select(f => new SelectListItem()
+                {
+                    Text = f.Name,
+                    Value = f.ID.ToString(),
+                    Selected = true
+                })?.ToList();
+                result.AddRange(noSelected.Select(f => new SelectListItem()
+                {
+                    Text = f.Name,
+                    Value = f.ID.ToString(),
+                    Selected = false
+                })?.ToList());
+                return result;
+            }
+        }
+        public List<SelectListItem> SourcesView
+        {
+            get
+            {
+                List<Source> selected = Feed?.FeedSources?.Select(f => f.Source)?.ToList() ?? new List<Source>();
+                List<Source> noSelected = AllSources?.Where(s => !selected.Contains(s))?.ToList() ?? new List<Source>();
                 var result = selected.Select(f => new SelectListItem()
                 {
                     Text = f.Name,

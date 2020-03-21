@@ -3,15 +3,17 @@ using System;
 using Blog.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Blog.Admin.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200321092908_AddSources")]
+    partial class AddSources
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -115,28 +117,6 @@ namespace Blog.Admin.Migrations
                     b.ToTable("FeedCategories");
                 });
 
-            modelBuilder.Entity("Blog.Models.FeedSource", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<int>("FeedID")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("SourceID")
-                        .HasColumnType("integer");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("FeedID");
-
-                    b.HasIndex("SourceID");
-
-                    b.ToTable("FeedSources");
-                });
-
             modelBuilder.Entity("Blog.Models.FeedTag", b =>
                 {
                     b.Property<int>("ID")
@@ -166,6 +146,9 @@ namespace Blog.Admin.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<int>("FeedID")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
@@ -174,7 +157,9 @@ namespace Blog.Admin.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Sources");
+                    b.HasIndex("FeedID");
+
+                    b.ToTable("Source");
                 });
 
             modelBuilder.Entity("Blog.Models.Tag", b =>
@@ -416,21 +401,6 @@ namespace Blog.Admin.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Blog.Models.FeedSource", b =>
-                {
-                    b.HasOne("Blog.Models.Feed", "Feed")
-                        .WithMany("FeedSources")
-                        .HasForeignKey("FeedID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Blog.Models.Source", "Source")
-                        .WithMany("FeedSources")
-                        .HasForeignKey("SourceID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Blog.Models.FeedTag", b =>
                 {
                     b.HasOne("Blog.Models.Feed", "Feed")
@@ -442,6 +412,15 @@ namespace Blog.Admin.Migrations
                     b.HasOne("Blog.Models.Tag", "Tag")
                         .WithMany("TagFeeds")
                         .HasForeignKey("TagID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Blog.Models.Source", b =>
+                {
+                    b.HasOne("Blog.Models.Feed", "Feed")
+                        .WithMany("Sources")
+                        .HasForeignKey("FeedID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

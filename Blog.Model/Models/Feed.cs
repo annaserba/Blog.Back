@@ -36,6 +36,6 @@ namespace Blog.Models
         public string Content { get; set; }
         public bool CommentStatus { get; set; }
         public string MetaDescription { get; set; }
-        public string Source { get; set; }
+        public ICollection<FeedSource> FeedSources { get; set; }
     }
 }
