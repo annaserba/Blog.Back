@@ -33,7 +33,7 @@ namespace Blog.Api
                 options.UseNpgsql(DATABASE));
             
             services.AddControllers();
-            var CLIENT_URL = Environment.GetEnvironmentVariable("CLIENT_URL")?? Configuration.GetValue<string>("CLIENT_URL");
+            var CLIENT_URL = (Environment.GetEnvironmentVariable("CLIENT_URL")?? Configuration.GetValue<string>("CLIENT_URL")).Split(',');
             services.AddCors(options =>
             {
                 options.AddPolicy("Feeds",
